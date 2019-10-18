@@ -41,4 +41,24 @@
 
     })
 
+    describe('remove wav header', function () {
+
+        it('remove header with buffer data ok', function () {
+            const len = 100
+            const originBuf = Buffer.alloc(len)
+
+            const newBuf = wavConverter.decodeWav(originBuf)
+            assert.equal(newBuf.byteLength, len - 44)
+        })
+
+        it('remove header with binary data ok', function () {
+            const len = 100
+            const originBuf = Buffer.alloc(len).toString('binary')
+
+            const newBuf = wavConverter.decodeWav(originBuf)
+            assert.equal(newBuf.byteLength, len - 44)
+        })
+
+    })
+
 }())

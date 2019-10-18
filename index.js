@@ -17,7 +17,7 @@ function encodeWav(rawPCM, options) {
     }
 
     if (!Buffer.isBuffer(rawPCM)) {
-        throw new TypeError('pcm data must be Buffer')
+        throw new TypeError('pcm data must be Buffer or string')
     }
     const opt = options || {}
     const sampleRate = opt.sampleRate || 16000
@@ -45,9 +45,17 @@ function encodeWav(rawPCM, options) {
 }
 
 
-function decodeWav(rawWav, options) {
-    if (typeof rawWav !== 'string') {
-        throw new TypeError('wav data must be binary string')
+function decodeWav(rawWav) {
+    if (typeof rawWav === 'string') {
+        rawWav = Buffer.from(rawWav, 'binary')
     }
-    return
+
+    if (!Buffer.isBuffer(rawWav)) {
+        throw new TypeError('pcm data must be Buffer or string')
+    }
+
+    // remove the header of pcm format
+    rawWav = rawWav.slice(44)
+
+    return rawWav
 }
