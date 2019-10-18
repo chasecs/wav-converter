@@ -4,7 +4,7 @@ module.exports = {
 }
 
 /**
- * @param rawPCM buffer
+ * @param rawPCM buffer || binary
  * @param options.numChannels
  * @param options.sampleRate 
  * @param options.byteRate
@@ -12,6 +12,10 @@ module.exports = {
  * @throws Exception
  */
 function encodeWav(rawPCM, options) {
+    if (typeof rawPCM === 'string') {
+        rawPCM = Buffer.from(rawPCM, 'binary')
+    }
+
     if (!Buffer.isBuffer(rawPCM)) {
         throw new TypeError('pcm data must be Buffer')
     }
@@ -20,7 +24,6 @@ function encodeWav(rawPCM, options) {
     const numChannels = opt.numChannels || 1
     const byteRate = opt.byteRate || 16
 
-    // const buf = Buffer.from(rawPCM, 'binary')
     const buf = rawPCM
     const header = new Buffer.alloc(44)
 
